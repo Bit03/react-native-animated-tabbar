@@ -174,10 +174,7 @@ export function AnimatedTabBar<T extends PresetEnum>(
       const { key, name } = routes[index];
 
       if (!!vibrate) {
-        ReactNativeHapticFeedback.trigger(
-          'impactMedium',
-          hapticFeedbackOptions
-        );
+        ReactNativeHapticFeedback.trigger('impactLight', hapticFeedbackOptions);
       }
 
       const event = navigation.emit({
