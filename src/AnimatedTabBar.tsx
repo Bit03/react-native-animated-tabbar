@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useEffect, useRef } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { AnimatedTabBarView } from './AnimatedTabBarView';
 import { interpolate } from './utilities';
 import { useTabBarVisibility, useStableCallback } from './hooks';
@@ -21,6 +22,11 @@ interface Route {
   key: string;
 }
 
+const hapticFeedbackOptions = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false,
+};
+
 export function AnimatedTabBar<T extends PresetEnum>(
   props: AnimatedTabBarProps<T>
 ) {
@@ -32,6 +38,7 @@ export function AnimatedTabBar<T extends PresetEnum>(
     descriptors,
     onTabPress,
     onTabLongPress,
+    vibrate,
     style: overrideStyle,
     safeAreaInsets: overrideSafeAreaInsets,
     ...rest
@@ -173,6 +180,12 @@ export function AnimatedTabBar<T extends PresetEnum>(
       });
 
       if (!focused && !event.defaultPrevented) {
+        if (!!vibrate) {
+          ReactNativeHapticFeedback.trigger(
+            'impactMedium',
+            hapticFeedbackOptions
+          );
+        }
         navigation.dispatch({
           ...CommonActions.navigate(name),
           target: navigationKey,
