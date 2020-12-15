@@ -173,6 +173,13 @@ export function AnimatedTabBar<T extends PresetEnum>(
       const focused = index === navigationIndex;
       const { key, name } = routes[index];
 
+      if (!!vibrate) {
+        ReactNativeHapticFeedback.trigger(
+          'impactMedium',
+          hapticFeedbackOptions
+        );
+      }
+
       const event = navigation.emit({
         type: 'tabPress',
         target: key,
@@ -180,12 +187,6 @@ export function AnimatedTabBar<T extends PresetEnum>(
       });
 
       if (!focused && !event.defaultPrevented) {
-        if (!!vibrate) {
-          ReactNativeHapticFeedback.trigger(
-            'impactMedium',
-            hapticFeedbackOptions
-          );
-        }
         navigation.dispatch({
           ...CommonActions.navigate(name),
           target: navigationKey,
