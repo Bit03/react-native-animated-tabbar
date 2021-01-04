@@ -173,7 +173,7 @@ export function AnimatedTabBar<T extends PresetEnum>(
       const focused = index === navigationIndex;
       const { key, name } = routes[index];
 
-      if (!!vibrate) {
+      if (!focused && !!vibrate) {
         ReactNativeHapticFeedback.trigger('impactLight', hapticFeedbackOptions);
       }
 
